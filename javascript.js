@@ -9,7 +9,7 @@ const Polygon = {
         for (let i = 0; i < this.tops.length; i++) {// цикл идет по всем нашим вершинам
             // get current and next top
             const currentTop = this.tops[i]//вычисляем текущую вершину
-            const nextTop = this.isLastTop() ? this.tops[0] : this.tops[i + 1]//вычисляем следущую вершину, если дошли до конца массва, т.е. индекс последней вершины равен последнему i, тогда берем первую вершину
+            const nextTop = this.isLastTop(i) ? this.tops[0] : this.tops[i + 1]//вычисляем следущую вершину, если дошли до конца массва, т.е. индекс последней вершины равен последнему i, тогда берем первую вершину
 
             // get vector coordinates (x, y): A(x1, y1), B(x2, y2) => AB = (x2 - x1, y2 - y1)
             const vector = {
@@ -32,7 +32,7 @@ const Polygon = {
         for (let i = 0; i < this.tops.length; i++) {//идем по всем вершинам
             // get current and next top
             const currentTop = this.tops[i]//currentTop - текущая вершина, this.tops[i] - массив вершин у текущего многоугольника
-            const nextTop = this.isLastTop() ? this.tops[0] : this.tops[i + 1]//индексы вершин, если индекс последней  вершины равен последнему i в итерации, то присваиваем значение первой вершине, а иначе берем следущую вершину 
+            const nextTop = this.isLastTop(i) ? this.tops[0] : this.tops[i + 1]//индексы вершин, если индекс последней  вершины равен последнему i в итерации, то присваиваем значение первой вершине, а иначе берем следущую вершину 
 
             // multiply matching coordinates
             sumX += currentTop.x * nextTop.y// sumX берем х - у тукущей вершины и умножаем на Y следующей вершины 
@@ -47,17 +47,21 @@ const Polygon = {
 
         for (let i = 0; i < this.tops.length; i++) {
             const currentTop = this.tops[i]
-            const nextTop = this.isLastTop() ? this.tops[0] : this.tops[i + 1]
+            const nextTop = this.isLastTop(i) ? this.tops[0] : this.tops[i + 1]
 
-            const currentX = currentTop.x
-            const currentY = currentTop.y
+            const multiplier = 30
 
-            const nextX = nextTop.x
-            const nextY = nextTop.y
+            const currentX = currentTop.x * multiplier
+            const currentY = currentTop.y * multiplier
+
+            const nextX = nextTop.x * multiplier
+            const nextY = nextTop.y * multiplier
 
             ctx.beginPath()
 
+            const px = 5
             ctx.moveTo(currentX, currentY)
+            ctx.fillText(`P${i + 1} (${currentTop.x}, ${currentTop.y})`, currentX + px, currentY - px)
             ctx.lineTo(nextX, nextY)
             ctx.stroke()
 
